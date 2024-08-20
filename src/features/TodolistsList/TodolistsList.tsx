@@ -11,6 +11,7 @@ import { selectIsLoggedIn } from "features/auth/auth.selectors";
 import { selectTasks } from "features/TodolistsList/tasks.selectors";
 import { selectTodolists } from "features/TodolistsList/todolists.selectors";
 import { TaskStatuses } from "common/enums";
+import { useActions } from "common/hooks/useActions";
 
 export const TodolistsList = () => {
   const todolists = useSelector(selectTodolists);
@@ -19,47 +20,14 @@ export const TodolistsList = () => {
 
   const dispatch = useAppDispatch();
 
+  const { fetchTodolists, addTodolist  } = useActions(todolistsThunks);
+
   useEffect(() => {
     if (!isLoggedIn) {
       return;
     }
-    dispatch(todolistsThunks.fetchTodolists());
+    fetchTodolists();
   }, []);
-
-  const removeTask = useCallback(function (taskId: string, todolistId: string) {
-    dispatch(tasksThunks.removeTask({ taskId, todolistId }));
-  }, []);
-
-  const addTask = useCallback(function (title: string, todolistId: string) {
-    dispatch(tasksThunks.addTask({ title, todolistId }));
-  }, []);
-
-  const changeStatus = useCallback(function (taskId: string, status: TaskStatuses, todolistId: string) {
-    dispatch(tasksThunks.updateTask({ taskId, domainModel: { status }, todolistId }));
-  }, []);
-
-  const changeTaskTitle = useCallback(function (taskId: string, title: string, todolistId: string) {
-    dispatch(tasksThunks.updateTask({ taskId, domainModel: { title }, todolistId }));
-  }, []);
-
-  const changeFilter = useCallback(function (filter: FilterValuesType, id: string) {
-    dispatch(todolistsActions.changeTodolistFilter({ id, filter }));
-  }, []);
-
-  const removeTodolist = useCallback(function (id: string) {
-    dispatch(todolistsThunks.removeTodolist(id));
-  }, []);
-
-  const changeTodolistTitle = useCallback(function (id: string, title: string) {
-    dispatch(todolistsThunks.changeTodolistTitle({ id, title }));
-  }, []);
-
-  const addTodolist = useCallback(
-    (title: string) => {
-      dispatch(todolistsThunks.addTodolist(title));
-    },
-    [dispatch],
-  );
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
@@ -79,14 +47,7 @@ export const TodolistsList = () => {
               <Paper style={{ padding: "10px" }}>
                 <Todolist
                   todolist={tl}
-                  tasks={allTodolistTasks}
-                  removeTask={removeTask}
-                  changeFilter={changeFilter}
-                  addTask={addTask}
-                  changeTaskStatus={changeStatus}
-                  removeTodolist={removeTodolist}
-                  changeTaskTitle={changeTaskTitle}
-                  changeTodolistTitle={changeTodolistTitle}
+                  tasks={allTodolistTasks}                  
                 />
               </Paper>
             </Grid>
