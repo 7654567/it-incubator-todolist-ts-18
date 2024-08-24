@@ -5,7 +5,7 @@ import { TaskType } from "features/TodolistsList/todolists.api";
 import { EditableSpan } from "common/components";
 import { TaskStatuses } from "common/enums";
 import { useActions } from "common/hooks/useActions";
-import { tasksThunks } from "features/TodolistsList/tasks.reducer";
+import { tasksThunks } from "features/TodolistsList/tasks.actions";
 
 type TaskPropsType = {
   task: TaskType;
@@ -17,7 +17,7 @@ type TaskPropsType = {
 export const Task = React.memo((props: TaskPropsType) => {
   const { removeTask } = useActions(tasksThunks);
   const onClickHandler = useCallback(
-    () => removeTask({taskId:props.task.id, todolistId:props.todolistId}),
+    () => removeTask({ taskId: props.task.id, todolistId: props.todolistId }),
     [props.task.id, props.todolistId],
   );
 
