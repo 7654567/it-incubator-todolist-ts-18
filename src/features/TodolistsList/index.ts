@@ -9,3 +9,5 @@ const todolistsActions = {
 const tasksActions = {
   ...tasksThunks,
 };
+
+export { todolistsActions, tasksActions };
