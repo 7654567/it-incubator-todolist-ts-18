@@ -10,12 +10,10 @@ import { tasksThunks } from "features/TodolistsList/tasks.actions";
 type TaskPropsType = {
   task: TaskType;
   todolistId: string;
-  changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void;
-  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void;
 };
 
 export const Task = React.memo((props: TaskPropsType) => {
-  const { removeTask } = useActions(tasksThunks);
+  const { removeTask, updateTask } = useActions(tasksThunks);
   const onClickHandler = useCallback(
     () => removeTask({ taskId: props.task.id, todolistId: props.todolistId }),
     [props.task.id, props.todolistId],
@@ -23,19 +21,22 @@ export const Task = React.memo((props: TaskPropsType) => {
 
   const onChangeHandler = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      let newIsDoneValue = e.currentTarget.checked;
-      props.changeTaskStatus(
-        props.task.id,
-        newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New,
-        props.todolistId,
-      );
+      updateTask({
+        taskId: props.task.id,
+        domainModel: { status: e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New },
+        todolistId: props.todolistId,
+      });
     },
     [props.task.id, props.todolistId],
   );
 
   const onTitleChangeHandler = useCallback(
     (newValue: string) => {
-      props.changeTaskTitle(props.task.id, newValue, props.todolistId);
+      updateTask({
+        taskId: props.task.id,
+        domainModel: { title: newValue },
+        todolistId: props.todolistId,
+      });
     },
     [props.task.id, props.todolistId],
   );

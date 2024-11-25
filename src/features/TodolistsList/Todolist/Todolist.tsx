@@ -44,20 +44,18 @@ export const Todolist = React.memo(function (props: PropsType) {
     [props.todolist.id],
   );
 
-  const changeTaskStatus = useCallback(function (taskId: string, status: TaskStatuses, todolistId: string) {
-    dispatch(tasksThunks.updateTask({ taskId, domainModel: { status }, todolistId }));
-  }, []);
+  // const changeTaskStatus = useCallback(function (taskId: string, status: TaskStatuses, todolistId: string) {
+  //   dispatch(tasksThunks.updateTask({ taskId, domainModel: { status }, todolistId }));
+  // }, []);
 
-  const changeTaskTitle = useCallback(function (taskId: string, title: string, todolistId: string) {
-    dispatch(tasksThunks.updateTask({ taskId, domainModel: { title }, todolistId }));
-  }, []);
+  // const changeTaskTitle = useCallback(function (taskId: string, title: string, todolistId: string) {
+  //   dispatch(tasksThunks.updateTask({ taskId, domainModel: { title }, todolistId }));
+  // }, []);
 
   const onFilterButtonClickHandler = useCallback(
     (filter: FilterValuesType) => changeTodolistFilter({ filter, id: props.todolist.id }),
     [props.todolist.id],
   );
-
-
 
   let tasksForTodolist = props.tasks;
 
@@ -99,8 +97,8 @@ export const Todolist = React.memo(function (props: PropsType) {
             key={t.id}
             task={t}
             todolistId={props.todolist.id}
-            changeTaskTitle={changeTaskTitle}
-            changeTaskStatus={changeTaskStatus}
+            // changeTaskTitle={changeTaskTitle}
+            // changeTaskStatus={changeTaskStatus}
           />
         ))}
       </div>
