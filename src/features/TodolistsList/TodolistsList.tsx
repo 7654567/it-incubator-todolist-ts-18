@@ -15,7 +15,7 @@ export const TodolistsList = () => {
   const todolists = useSelector(selectTodolists);
   const tasks = useSelector(selectTasks);
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const { fetchTodolists, addTodolist  } = useActions(todolistsThunks);
+  const { fetchTodolists, addTodolist } = useActions(todolistsThunks);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -33,19 +33,16 @@ export const TodolistsList = () => {
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm addItem={addTodolist} />
       </Grid>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={{ overflowX: "scroll", flexWrap: "nowrap" }}>
         {todolists.map((tl) => {
           let allTodolistTasks = tasks[tl.id];
 
           return (
-            <Grid item key={tl.id}>
-              <Paper style={{ padding: "10px" }}>
-                <Todolist
-                  todolist={tl}
-                  tasks={allTodolistTasks}                  
-                />
-              </Paper>
-            </Grid>
+            <Paper style={{ margin: "10px", padding: "10px" }}>
+              <Grid item key={tl.id} style={{ overflow: "hidden", width: "300px" }}>
+                <Todolist todolist={tl} tasks={allTodolistTasks} />
+              </Grid>
+            </Paper>
           );
         })}
       </Grid>
